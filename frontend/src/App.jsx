@@ -168,7 +168,7 @@ const CropRecommendationForm = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch('https://crop-cast.vercel.app/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
