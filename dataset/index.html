@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Bar Chart Visualization</title>
+</head>
+<body>
+    <input type="file" id="csvFile" accept=".csv">
+    <div id="plotContainer"></div>
+
+    <script type="module">
+    import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+    // Handle file upload
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+            // Parse CSV
+            const data = parseCSV(event.target.result);
+            
+            // Create and display the plot
+            createPlot(data);
+        };
+        
+        reader.readAsText(file);
+    });
+
+    // CSV Parser
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        
+        return lines.slice(1).map(line => {
+            const values = line.split(',');
+            const row = {};
+            headers.forEach((header, i) => {
+                // Convert string numbers to actual numbers
+                const value = values[i].trim();
+                row[header] = isNaN(value) ? value : Number(value);
+            });
+            return row;
+        });
+    }
+
+    // Create the plot
+    function createPlot(data) {
+        // Get the first two column names from the data
+        const columns = Object.keys(data[0]);
+        const xColumn = columns[0];  // First column for x-axis
+        const yColumn = columns[1];  // Second column for y-axis
+
+        const plot = Plot.plot({
+            y: {
+                grid: true,
+                percent: true
+            },
+            marks: [
+                Plot.ruleY([0]),
+                Plot.barY(data, {
+                    x: xColumn,  // Use first column for x-axis
+                    y: yColumn,  // Use second column for y-axis
+                    sort: {x: "y", reverse: true}
+                })
+            ],
+            width: 800,
+            height: 400,
+            margin: 40,
+            style: {
+                background: "white",
+                color: "black"
+            }
+        });
+
+        // Clear previous plot and append new one
+        const container = document.getElementById('plotContainer');
+        container.innerHTML = '';
+        container.append(plot);
+    }
+    </script>
+</body>
+</html>
