@@ -168,7 +168,7 @@ const CropRecommendationForm = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await fetch('https://cropcast-2.onrender.com', {
+      const response = await fetch('https://cropcast-2.onrender.com/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
