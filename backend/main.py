@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load and prepare model on startup
+
 data = pd.read_csv("Crop_recommendation1.csv")
 X = data.drop('label', axis=1)
 y = data['label']
