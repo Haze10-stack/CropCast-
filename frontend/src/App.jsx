@@ -166,10 +166,10 @@ const CropRecommendationForm = () => {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('form'); // 'form' or 'info'
+  const [activeTab, setActiveTab] = useState('form'); 
   const [mounted, setMounted] = useState(false);
 
-  // Add animation effect when component mounts
+  
   useEffect(() => {
     setMounted(true);
   }, []);
